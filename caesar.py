@@ -1,37 +1,32 @@
-def alphabet_position(letter):
-    alpha_lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-               'v', 'w', 'x', 'y', 'z']
-    alpha_upper = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-               'V', 'W', 'X', 'Y', 'Z']
-    if letter.isalpha() == False:
-        return letter
-    elif letter.isupper():
-        return (alpha_upper.index(letter))
-    else:
-        return (alpha_lower.index(letter))
-
-
-def rotate_character(char, rot):
-    alpha_lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-               'v', 'w', 'x', 'y', 'z']
-    alpha_upper = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-               'V', 'W', 'X', 'Y', 'Z']
-    rotated = ''
-    result = alphabet_position(char)
-    result = (result) + (int(rot)) % 25
-
-    if char.isupper() == True:
-        rotated += alpha_upper[result]
-    else:
-        rotated += alpha_lower[result]
-    return rotated
+from helpers import alphabet_position, rotate_character
+from sys import argv, exit
 
 
 
 def encrypt(text, rot):
-    encrypted = ''
+    '''Takes a string, rotates each character one by one, and returns the new string'''
+    final = ""
+    for i in text:
+        newalpha = rotate_character(i, rot)
+        final = final + newalpha
+    return final
 
-    for char in text:
-        result = rotate_character(char, rot)
-        encrypted += result
-    return encrypted
+    #Makes sure the user inputs a digit as the command-line argument
+def user_input_is_valid(cl_args):
+    if len(cl_args) == 2 and cl_args[1].isdigit():
+        return True
+    else:
+        return False
+
+def main():
+    print("I know that these are the words the user typed on the command line: ", argv)
+    if user_input_is_valid(argv):
+        encrypt(text=input("Type a message"), rot=argv[1])
+
+    else:
+        print('usage: python3 caesar.py n')
+        exit()
+
+
+if __name__ == '__main__':
+    main()
